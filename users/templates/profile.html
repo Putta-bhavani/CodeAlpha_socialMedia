@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f0f2f5;
+            margin:0;
+        }
+
+        .container{
+            width:700px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0 0 10px lightgray;
+            text-align:center;
+        }
+
+        .profile-img{
+            width:170px;
+            height:170px;
+            border-radius:50%;
+            object-fit:cover;
+            border:5px solid #1877f2;
+        }
+
+        .stats{
+            display:flex;
+            justify-content:center;
+            gap:60px;
+            margin-top:20px;
+            font-size:18px;
+        }
+
+        .btn{
+            padding:10px 20px;
+            background:#1877f2;
+            color:white;
+            border:none;
+            border-radius:8px;
+            text-decoration:none;
+            margin:10px;
+            display:inline-block;
+        }
+
+        .btn:hover{
+            background:#0d5ad8;
+        }
+
+        .top{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top">
+
+        <a class="btn" href="{% url 'edit_profile' %}">
+            Edit Profile
+        </a>
+
+        <a class="btn" href="{% url 'home' %}">
+            Home
+        </a>
+
+    </div>
+
+    {% if request.user.profile.profile_image %}
+        <img class="profile-img"
+             src="{{ request.user.profile.profile_image.url }}">
+    {% else %}
+        <p>No Profile Image</p>
+    {% endif %}
+
+    <h2>{{ request.user.username }}</h2>
+
+    <p>{{ request.user.profile.bio }}</p>
+
+    <div class="stats">
+
+        <div>
+            <b>{{ posts.count }}</b><br>
+            Posts
+        </div>
+
+        <div>
+            <b>{{ request.user.followers.count }}</b><br>
+            Followers
+        </div>
+
+        <div>
+            <b>{{ request.user.following.count }}</b><br>
+            Following
+        </div>
+
+    </div>
+    <h2>My Posts</h2>
+
+<div class="posts">
+
+{% for post in posts %}
+
+<div class="card">
+
+    <p>{{ post.caption }}</p>
+
+    {% if post.image %}
+        <img src="{{ post.image.url }}" width="250">
+    {% endif %}
+    {% if post.video %}
+<video width="250" controls>
+    <source src="{{ post.video.url }}">
+</video>
+{% endif %}
+
+    <p>❤️ {{ post.total_likes }} Likes</p>
+     <a href="{% url 'delete_post' post.id %}"
+       onclick="return confirm('Delete this post?');"
+       style="color:red;">
+       🗑 Delete Post
+    </a>
+
+</div>
+
+{% empty %}
+
+<p>No Posts Yet</p>
+
+{% endfor %}
+
+
+</div>
+
+</body>
+</html>

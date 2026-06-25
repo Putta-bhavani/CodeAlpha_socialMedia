@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>AI Assistant</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f0f2f5;
+}
+
+.chat{
+
+width:500px;
+
+margin:50px auto;
+
+background:white;
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:0 0 10px gray;
+
+}
+
+input{
+
+width:80%;
+
+padding:10px;
+
+}
+
+button{
+
+padding:10px;
+
+}
+
+.reply{
+
+background:#e3f2fd;
+
+padding:10px;
+
+margin-top:20px;
+
+border-radius:10px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="chat">
+
+<h2>🤖 AI Assistant</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input
+type="text"
+name="message"
+placeholder="Ask something..."
+required>
+
+<button type="submit">
+
+Send
+
+</button>
+
+</form>
+
+{% if reply %}
+
+<div class="reply">
+
+<b>AI:</b>
+
+{{ reply }}
+
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+
+</html>
